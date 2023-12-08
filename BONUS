@@ -1,0 +1,74 @@
+class Employee {
+    protected String name;
+    protected String address;
+    protected double salary;
+    protected String jobTitle;
+
+    public Employee(String name, String address, double salary, String jobTitle) {
+        this.name = name;
+        this.address = address;
+        this.salary = salary;
+        this.jobTitle = jobTitle;
+    }
+
+    public void displayDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Address: " + address);
+        System.out.println("Salary: $" + salary);
+        System.out.println("Job Title: " + jobTitle);
+    }
+
+    public void calculateBonus() {
+        double bonus = 0.1 * salary;
+        System.out.println("Bonus: $" + bonus);
+    }
+}
+
+class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, String address, double salary, String jobTitle, String department) {
+        super(name, address, salary, jobTitle);
+        this.department = department;
+    }
+}
+
+class Developer extends Employee {
+    private String programmingLanguage;
+
+    public Developer(String name, String address, double salary, String jobTitle, String programmingLanguage) {
+        super(name, address, salary, jobTitle);
+        this.programmingLanguage = programmingLanguage;
+    }
+}
+
+class Programmer extends Employee {
+    private String project;
+
+    public Programmer(String name, String address, double salary, String jobTitle, String project) {
+        super(name, address, salary, jobTitle);
+        this.project = project;
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Manager manager = new Manager("John Doe", "123 Main St", 80000, "Manager", "IT Department");
+        Developer developer = new Developer("Jane Smith", "456 Oak St", 70000, "Developer", "Java");
+        Programmer programmer = new Programmer("Bob Johnson", "789 Pine St", 60000, "Programmer", "Web Application");
+
+        System.out.println("Manager Details:");
+        manager.displayDetails();
+        manager.calculateBonus();
+        System.out.println();
+
+        System.out.println("Developer Details:");
+        developer.displayDetails();
+        developer.calculateBonus();
+        System.out.println();
+
+        System.out.println("Programmer Details:");
+        programmer.displayDetails();
+        programmer.calculateBonus();
+    }
+}
