@@ -1,0 +1,55 @@
+class Animal {
+    public void move() {
+        System.out.println("Animal is moving");
+    }
+
+    public void makeSound() {
+        System.out.println("Animal makes a generic sound");
+    }
+}
+
+class Bird extends Animal {
+    @Override
+    public void move() {
+        System.out.println("Bird is flying");
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Bird sings chirp chirp");
+    }
+}
+
+class Panthera extends Animal {
+    @Override
+    public void move() {
+        System.out.println("Panthera is walking");
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Panthera roars");
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Animal genericAnimal = new Animal();
+        Bird sparrow = new Bird();
+        Panthera lion = new Panthera();
+
+        System.out.println("Generic Animal:");
+        genericAnimal.move();
+        genericAnimal.makeSound();
+        System.out.println();
+
+        System.out.println("Bird:");
+        sparrow.move();
+        sparrow.makeSound();
+        System.out.println();
+
+        System.out.println("Panthera:");
+        lion.move();
+        lion.makeSound();
+    }
+}
