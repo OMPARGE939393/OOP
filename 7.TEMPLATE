@@ -1,161 +1,96 @@
-/* 
-Assignment No.7
-Title:- Template
+import java.util.ArrayList;
+import java.util.Collection;
 
-Problem Statement:- Implement a generic program using any collection class to count the number of elements in a collection that have a specific property such as even numbers, odd number, prime number and palindromes.
-*/
+ class GenericCollectionCount {
+    public static void main(String[] args) {
+        // Creating a generic collection (ArrayList)
+        ArrayList<Integer> numbers = new ArrayList<>();
+        numbers.add(12);
+        numbers.add(7);
+        numbers.add(22);
+        numbers.add(9);
+        numbers.add(31);
+        numbers.add(121);
+        numbers.add(44);
+        numbers.add(353);
 
+        // Counting elements with specific properties
+        int evenCount = countElements(numbers, new EvenNumberPredicate());
+        int oddCount = countElements(numbers, new OddNumberPredicate());
+        int primeCount = countElements(numbers, new PrimeNumberPredicate());
+        int palindromeCount = countElements(numbers, new PalindromePredicate());
 
-//CODE
-
-// FILE NAME: Assignment_7.java
-
-import java.util.*;
-import java.lang.*;
-import java.io.*;
-class Assignment_7
-{
-    static int count=0;
-    static void even_odd(int num)
-    {
-        if (num%2==0)
-        {
-            System.out.println(num+" is even number");
-            count+=1;
-        } else
-        {
-            System.out.println(num+" is odd number");
-        }
+        // Displaying the counts
+        System.out.println("Number of even numbers: " + evenCount);
+        System.out.println("Number of odd numbers: " + oddCount);
+        System.out.println("Number of prime numbers: " + primeCount);
+        System.out.println("Number of palindromes: " + palindromeCount);
     }
-    static void prime_no(int num)
-    {
-        boolean flag = false;
-        for(int i = 2; i <= num/2; ++i)
-        {
-            if(num % i == 0)
-            {
-                flag = true;
-                break;
+
+    // Generic method to count elements with a specific property
+    private static <T> int countElements(Collection<T> collection, ElementPropertyPredicate<T> predicate) {
+        int count = 0;
+        for (T element : collection) {
+            if (predicate.test(element)) {
+                count++;
             }
         }
-        if (!flag) {
-            System.out.println(num + " is a prime number.");
-            count += 1;
-        }
-        else
-            System.out.println(num + " is not a prime number.");
-
+        return count;
     }
-    static void Palindrome(String str1)
-    {
-        StringBuilder s1=new StringBuilder(str1);
-        if(str1.equals(s1.reverse().toString()))
-        {
-            System.out.println(str1+" is palindrome");
-            count+=1;
+}
 
-        }
-        else
-        {
-            System.out.println(str1+" is not palindrome");
-        }
+// Functional interface to define the property predicate
+interface ElementPropertyPredicate<T> {
+    boolean test(T element);
+}
+
+// Implementing predicates for even, odd, prime, and palindrome numbers
+class EvenNumberPredicate implements ElementPropertyPredicate<Integer> {
+    @Override
+    public boolean test(Integer element) {
+        return element % 2 == 0;
     }
+}
 
-    static void check(int ch,int num)
-    {
-        switch(ch)
-        {
-            case 1:
-                even_odd(num);
-                break;
-
-            case 2:
-                prime_no(num);
-                break;
-
-            default:
-                System.out.println("Invalid choice");
-
-        }
+class OddNumberPredicate implements ElementPropertyPredicate<Integer> {
+    @Override
+    public boolean test(Integer element) {
+        return element % 2 != 0;
     }
-    static void integer_op()
-    {
+}
 
-        int element,n,ch;
-        Scanner in=new Scanner(System.in);
-        ArrayList<Integer>nums=new ArrayList<Integer>();
-        System.out.println("Enter the number of elements:");
-        n=in.nextInt();
-        for(int i=0;i<n;i++)
-        {
-            System.out.println("Enter number:");
-            element=in.nextInt();
-            nums.add(element);
+class PrimeNumberPredicate implements ElementPropertyPredicate<Integer> {
+    @Override
+    public boolean test(Integer element) {
+        if (element < 2) {
+            return false;
         }
-
-        System.out.println("1.Even or Odd");
-        System.out.println("2.Prime or not");
-        System.out.println("Choose:");
-
-        ch=in.nextInt();
-        Iterator itr = nums.iterator();
-        count=0;
-        while(itr.hasNext())
-        {
-            check(ch, (int)itr.next());
-        }
-
-        switch (ch) {
-            case 1 -> {
-                System.out.println("The total number of even and odd numbers occured are:");
-                System.out.println("The number of even number are:" + count);
-                System.out.println("The number of odd number are:" + (nums.size() - count));
-            }
-            case 2 -> {
-                System.out.println("The total number of Prime and Non-Prime numbers occured are:");
-                System.out.println("The number of PRIME number are:" + count);
-                System.out.println("The numbers which are NOT Prime number are:" + (nums.size() - count));
+        for (int i = 2; i <= Math.sqrt(element); i++) {
+            if (element % i == 0) {
+                return false;
             }
         }
+        return true;
+    }
+}
 
+class PalindromePredicate implements ElementPropertyPredicate<Integer> {
+    @Override
+    public boolean test(Integer element) {
+        String numberStr = Integer.toString(element);
+        return isPalindrome(numberStr);
     }
 
-    static void string_op()
-    {
-        int m;
-        String str1;
-        ArrayList<String>words=new ArrayList<String>();
-        Scanner in=new Scanner(System.in);
-        System.out.println("Enter the number of Strings:");
-        m=in.nextInt();
-        for(int i=0;i<m;i++)
-        {
-            System.out.println("Enter string:");
-            str1=in.next();
-            words.add(str1);
+    private boolean isPalindrome(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
-        count=0;
-        for(String w:words)
-        {
-            Palindrome(w);
-        }
-        System.out.println("The number of Palindrome string are:"+count);
-        System.out.println("The number of non-palindrome string is:"+(words.size()-count));
-
-    }
-    public static void main(String []args)
-    {
-        Scanner in=new Scanner(System.in);
-        System.out.println("Choose type");
-        System.out.println("1. String");
-        System.out.println("2. Integer");
-        int ch=in.nextInt();
-
-        switch (ch) {
-            case 1 -> string_op();
-            case 2 -> integer_op();
-        }
-
-
+        return true;
     }
 }
