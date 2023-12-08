@@ -1,96 +1,65 @@
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
- class GenericCollectionCount {
+class Generic {
+    static boolean isPrime(int num) {
+        int flag = 0;
+        for (int i = 2; i < num; i++) {
+            if (num % i == 0) {
+                flag = 1;
+                break;
+            }
+        }
+        return flag == 0 && num > 1;
+    }
+
+    static <T> void count(String type, T[] elements) {
+        int even = 0, odd = 0, prime = 0, palin = 0;
+
+        if (type.equalsIgnoreCase("EVEN")) {
+            for (T value : elements) {
+                if (Integer.parseInt(value.toString()) % 2 == 0) {
+                    even++;
+                }
+            }
+            System.out.println("Total even: " + even);
+        }
+
+        if (type.equalsIgnoreCase("ODD")) {
+            for (T value : elements) {
+                if (Integer.parseInt(value.toString()) % 2 != 0) {
+                    odd++;
+                }
+            }
+            System.out.println("Total odd: " + odd);
+        }
+
+        if (type.equalsIgnoreCase("PRIME")) {
+            for (T value : elements) {
+                if (isPrime(Integer.parseInt(value.toString()))) {
+                    prime++;
+                }
+            }
+            System.out.println("Total prime: " + prime);
+        }
+
+        if (type.equalsIgnoreCase("PALINDROME")) {
+            for (T value : elements) {
+                String strValue = value.toString();
+                StringBuilder rev = new StringBuilder(strValue).reverse();
+                if (strValue.equals(rev.toString())) {
+                    palin++;
+                }
+            }
+            System.out.println("Total palindrome: " + palin);
+        }
+    }
+
     public static void main(String[] args) {
-        // Creating a generic collection (ArrayList)
-        ArrayList<Integer> numbers = new ArrayList<>();
-        numbers.add(12);
-        numbers.add(7);
-        numbers.add(22);
-        numbers.add(9);
-        numbers.add(31);
-        numbers.add(121);
-        numbers.add(44);
-        numbers.add(353);
-
-        // Counting elements with specific properties
-        int evenCount = countElements(numbers, new EvenNumberPredicate());
-        int oddCount = countElements(numbers, new OddNumberPredicate());
-        int primeCount = countElements(numbers, new PrimeNumberPredicate());
-        int palindromeCount = countElements(numbers, new PalindromePredicate());
-
-        // Displaying the counts
-        System.out.println("Number of even numbers: " + evenCount);
-        System.out.println("Number of odd numbers: " + oddCount);
-        System.out.println("Number of prime numbers: " + primeCount);
-        System.out.println("Number of palindromes: " + palindromeCount);
-    }
-
-    // Generic method to count elements with a specific property
-    private static <T> int countElements(Collection<T> collection, ElementPropertyPredicate<T> predicate) {
-        int count = 0;
-        for (T element : collection) {
-            if (predicate.test(element)) {
-                count++;
-            }
-        }
-        return count;
+        Integer[] arr = { 33, 45, 60, 65, 232, 10 };
+        count("EVEN", arr);
+        count("ODD", arr);
+        count("PRIME", arr);
+        count("PALINDROME", arr);
     }
 }
 
-// Functional interface to define the property predicate
-interface ElementPropertyPredicate<T> {
-    boolean test(T element);
-}
-
-// Implementing predicates for even, odd, prime, and palindrome numbers
-class EvenNumberPredicate implements ElementPropertyPredicate<Integer> {
-    @Override
-    public boolean test(Integer element) {
-        return element % 2 == 0;
-    }
-}
-
-class OddNumberPredicate implements ElementPropertyPredicate<Integer> {
-    @Override
-    public boolean test(Integer element) {
-        return element % 2 != 0;
-    }
-}
-
-class PrimeNumberPredicate implements ElementPropertyPredicate<Integer> {
-    @Override
-    public boolean test(Integer element) {
-        if (element < 2) {
-            return false;
-        }
-        for (int i = 2; i <= Math.sqrt(element); i++) {
-            if (element % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-class PalindromePredicate implements ElementPropertyPredicate<Integer> {
-    @Override
-    public boolean test(Integer element) {
-        String numberStr = Integer.toString(element);
-        return isPalindrome(numberStr);
-    }
-
-    private boolean isPalindrome(String str) {
-        int left = 0;
-        int right = str.length() - 1;
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
-    }
-}
