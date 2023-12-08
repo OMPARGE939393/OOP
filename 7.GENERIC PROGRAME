@@ -2,20 +2,21 @@ import java.util.*;
 
 class Generic {
     static boolean isPrime(int num) {
-        int flag = 0;
-        for (int i = 2; i < num; i++) {
+        if (num <= 1) {
+            return false;
+        }
+        for (int i = 2; i * i <= num; i++) {
             if (num % i == 0) {
-                flag = 1;
-                break;
+                return false;
             }
         }
-        return flag == 0 && num > 1;
+        return true;
     }
 
     static <T> void count(String type, T[] elements) {
         int even = 0, odd = 0, prime = 0, palin = 0;
 
-        if (type.equalsIgnoreCase("EVEN")) {
+        if (type.equals("EVEN")) {
             for (T value : elements) {
                 if (Integer.parseInt(value.toString()) % 2 == 0) {
                     even++;
@@ -24,7 +25,7 @@ class Generic {
             System.out.println("Total even: " + even);
         }
 
-        if (type.equalsIgnoreCase("ODD")) {
+        if (type.equals("ODD")) {
             for (T value : elements) {
                 if (Integer.parseInt(value.toString()) % 2 != 0) {
                     odd++;
@@ -33,7 +34,7 @@ class Generic {
             System.out.println("Total odd: " + odd);
         }
 
-        if (type.equalsIgnoreCase("PRIME")) {
+        if (type.equals("PRIME")) {
             for (T value : elements) {
                 if (isPrime(Integer.parseInt(value.toString()))) {
                     prime++;
@@ -42,10 +43,10 @@ class Generic {
             System.out.println("Total prime: " + prime);
         }
 
-        if (type.equalsIgnoreCase("PALINDROME")) {
+        if (type.equals("PALINDROME")) {
             for (T value : elements) {
                 String strValue = value.toString();
-                StringBuilder rev = new StringBuilder(strValue).reverse();
+                StringBuffer rev = new StringBuffer(strValue).reverse();
                 if (strValue.equals(rev.toString())) {
                     palin++;
                 }
@@ -62,4 +63,3 @@ class Generic {
         count("PALINDROME", arr);
     }
 }
-
