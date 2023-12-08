@@ -1,0 +1,142 @@
+/*
+Write a Java program to create a vehicle class hierarchy. The base class should be
+Vehicle, with subclasses Truck, Car and Motorcycle. Each subclass should have
+properties such as make, model, year, and fuel type. Implement methods for calculating
+fuel efficiency, distance traveled, and maximum speed.
+
+ */
+
+
+
+class Vehicle {
+    protected String make;
+    protected String model;
+    protected int year;
+    protected String fuelType;
+
+    public Vehicle(String make, String model, int year, String fuelType) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.fuelType = fuelType;
+    }
+
+    public void displayDetails() {
+        System.out.println("Make: " + make);
+        System.out.println("Model: " + model);
+        System.out.println("Year: " + year);
+        System.out.println("Fuel Type: " + fuelType);
+    }
+
+    public void calculateFuelEfficiency() {
+        System.out.println("Calculating fuel efficiency for a generic vehicle.");
+    }
+
+    public void calculateDistanceTraveled() {
+        System.out.println("Calculating distance traveled for a generic vehicle.");
+    }
+
+    public void displayMaxSpeed() {
+        System.out.println("Maximum speed for a generic vehicle.");
+    }
+}
+
+class Truck extends Vehicle {
+    private int cargoCapacity;
+
+    public Truck(String make, String model, int year, String fuelType, int cargoCapacity) {
+        super(make, model, year, fuelType);
+        this.cargoCapacity = cargoCapacity;
+    }
+
+    @Override
+    public void calculateFuelEfficiency() {
+        System.out.println("Calculating fuel efficiency for a Truck.");
+    }
+
+    @Override
+    public void calculateDistanceTraveled() {
+        System.out.println("Calculating distance traveled for a Truck.");
+    }
+
+    @Override
+    public void displayMaxSpeed() {
+        System.out.println("Maximum speed for a Truck.");
+    }
+}
+
+class Car extends Vehicle {
+    private int passengerCapacity;
+
+    public Car(String make, String model, int year, String fuelType, int passengerCapacity) {
+        super(make, model, year, fuelType);
+        this.passengerCapacity = passengerCapacity;
+    }
+
+    @Override
+    public void calculateFuelEfficiency() {
+        System.out.println("Calculating fuel efficiency for a Car.");
+    }
+
+    @Override
+    public void calculateDistanceTraveled() {
+        System.out.println("Calculating distance traveled for a Car.");
+    }
+
+    @Override
+    public void displayMaxSpeed() {
+        System.out.println("Maximum speed for a Car.");
+    }
+}
+
+class Motorcycle extends Vehicle {
+    private boolean hasFairing;
+
+    public Motorcycle(String make, String model, int year, String fuelType, boolean hasFairing) {
+        super(make, model, year, fuelType);
+        this.hasFairing = hasFairing;
+    }
+
+    @Override
+    public void calculateFuelEfficiency() {
+        System.out.println("Calculating fuel efficiency for a Motorcycle.");
+    }
+
+    @Override
+    public void calculateDistanceTraveled() {
+        System.out.println("Calculating distance traveled for a Motorcycle.");
+    }
+
+    @Override
+    public void displayMaxSpeed() {
+        System.out.println("Maximum speed for a Motorcycle.");
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Truck truck = new Truck("Ford", "F-150", 2022, "Gasoline", 5000);
+        Car car = new Car("Toyota", "Camry", 2022, "Gasoline", 5);
+        Motorcycle motorcycle = new Motorcycle("Harley-Davidson", "Sportster", 2022, "Gasoline", true);
+
+        System.out.println("Truck Details:");
+        truck.displayDetails();
+        truck.calculateFuelEfficiency();
+        truck.calculateDistanceTraveled();
+        truck.displayMaxSpeed();
+        System.out.println();
+
+        System.out.println("Car Details:");
+        car.displayDetails();
+        car.calculateFuelEfficiency();
+        car.calculateDistanceTraveled();
+        car.displayMaxSpeed();
+        System.out.println();
+
+        System.out.println("Motorcycle Details:");
+        motorcycle.displayDetails();
+        motorcycle.calculateFuelEfficiency();
+        motorcycle.calculateDistanceTraveled();
+        motorcycle.displayMaxSpeed();
+    }
+}
