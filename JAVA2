@@ -1,0 +1,113 @@
+/* Identify commonalities and differences between Publication, Book and Magazine classes. Title,
+Price, Copies are common instance variables and saleCopy is common method. The differences
+are, Bookclass has author and orderCopies(). Magazine Class has methods orderQty, Current issue,
+receiveissue().Write a program to find how many copies of the given books are ordered and
+display total sale of publication. */
+import java.util.Scanner;
+
+class Publication {
+    String title;
+    int copies, price;
+
+    void salesCopy() {
+        System.out.println("This is sales copy of class Publication");
+    }
+}
+
+class Book {
+    String title, author;
+    int copies, price;
+
+    Scanner sc = new Scanner(System.in);
+
+    void salesCopy() {
+        System.out.println("This is sales copy of class Book");
+    }
+
+    void displayDetails() {
+        title = "Hey Oops";
+        author = "Hey";
+        price = 2000;
+        System.out.println("TITLE: " + title);
+        System.out.println("AUTHOR: " + author);
+        System.out.println("PRICE: " + price);
+        System.out.println("TOTAL SALE: " + copies * price);
+    }
+
+    void orderCopies() {
+        System.out.println("Enter the number of copies:");
+        copies = sc.nextInt();
+    }
+}
+
+class Magazine {
+    String title;
+    int copies, price;
+
+    void salesCopy() {
+        System.out.println("This is sales copy of class Magazine");
+    }
+
+    void orderQuantity() {
+        System.out.println("This is order quantity of class Magazine");
+    }
+
+    void currentIssue() {
+        System.out.println("This is current issue of class Magazine");
+    }
+
+    void receiveIssue() {
+        System.out.println("This is receive issue of class Magazine");
+    }
+}
+    class Main {
+    public static void main(String[] args) {
+        int choice;
+        Scanner sc = new Scanner(System.in);
+        do {
+            System.out.println("ENTER YOUR CHOICE:");
+            System.out.println(".............MENU..............");
+            System.out.println("1. Publication 2. Book 3. Magazine 4. Exit");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1: {
+                    Publication p = new Publication();
+                    p.salesCopy();
+                    break;
+                }
+
+                case 2: {
+                    Book b = new Book();
+                    b.salesCopy();
+                       b.orderCopies();
+                        b.displayDetails();
+
+
+                    break;
+                }
+
+                case 3: {
+                    Magazine m = new Magazine();
+                    m.salesCopy();
+                    m.orderQuantity();
+                    m.currentIssue();
+                    m.receiveIssue();
+                    break;
+                }
+
+                case 4: {
+                    System.out.println("EXIT");
+                    break;
+                }
+
+                default: {
+                    System.out.println("INVALID INPUT");
+                    break;
+                }
+
+            }
+        } while (choice != 4);
+    }
+}
