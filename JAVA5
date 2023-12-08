@@ -1,0 +1,89 @@
+/*
+ Design and develop a context for given case study and implement an interface for Vehicles
+Consider the example of vehicles like bicycle, car and bike. All Vehicles have common
+functionalities such as Gear Change, Speed up and apply breaks. Make an interface and put all
+these common functionalities. Bicycle, Bike, Car classes should be implemented for all these
+functionalities in their own class in their own way.
+ */
+import java.util.Scanner;
+    interface vehicles{
+        void gearchange();
+        void speedup();
+        void applybrake();
+
+}
+class bicycles implements vehicles{
+ public void gearchange(){
+    System.out.println("THIS IS gearchange of bicycles");
+ }
+  public  void speedup(){
+        System.out.println("THIS IS speedup of bicycles");
+    }
+   public void applybrake(){
+        System.out.println("THIS IS applybrake of bicycles");
+    }
+
+}
+class bike implements vehicles{
+ public void gearchange(){
+    System.out.println("THIS IS gearchange of bike");
+ }
+ public   void speedup(){
+        System.out.println("THIS IS speedup of bike");
+    }
+  public  void applybrake(){
+        System.out.println("THIS IS applybrake of bike");
+    }
+
+}
+class car implements vehicles{
+  public void gearchange(){
+    System.out.println("THIS IS gearchange of car");
+ }
+   public void speedup(){
+        System.out.println("THIS IS speedup of car");
+    }
+ public    void applybrake(){
+        System.out.println("THIS IS applybrake of car");
+    }
+}
+class Main{
+public static void main(String[]args){
+int choice;
+Scanner sc=new Scanner(System.in);
+do{
+    System.out.println("...............................INTERFACE VEHICLES.................................");
+System.out.println("ENTER YOUR CHOICE");
+System.out.println("1.BICYCLES 2.BIKE 3.CAR ");
+choice=sc.nextInt();
+switch(choice){
+    case 1:
+    bicycles cycle=new bicycles();
+    cycle.gearchange();
+    cycle.speedup();
+    cycle.applybrake();
+    break;
+
+     case 2:
+    bike b=new bike();
+    b.gearchange();
+    b.speedup();
+    b.applybrake();
+    break;
+
+    case 3:
+    car c=new car();
+    c.gearchange();
+    c.speedup();
+    c.applybrake();
+    break;
+
+    case 4:
+    System.out.println("EXIT");
+
+    default:
+    System.out.println("INVALID INPUT");
+}
+}while(choice!=4);
+}
+}
