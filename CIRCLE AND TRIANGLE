@@ -1,0 +1,75 @@
+import java.util.Scanner;
+
+abstract class Shape {
+    abstract double calculateArea();
+    abstract double calculatePerimeter();
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+
+    @Override
+    double calculatePerimeter() {
+        return 2 * Math.PI * radius;
+    }
+}
+
+class Triangle extends Shape {
+    private double side1;
+    private double side2;
+    private double side3;
+
+    public Triangle(double side1, double side2, double side3) {
+        this.side1 = side1;
+        this.side2 = side2;
+        this.side3 = side3;
+    }
+
+    @Override
+    double calculateArea() {
+        // Using Heron's formula to calculate the area of a triangle
+        double s = (side1 + side2 + side3) / 2;
+        return Math.sqrt(s * (s - side1) * (s - side2) * (s - side3));
+    }
+
+    @Override
+    double calculatePerimeter() {
+        return side1 + side2 + side3;
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the radius of the circle: ");
+        double circleRadius = scanner.nextDouble();
+        Circle circle = new Circle(circleRadius);
+
+        System.out.print("Enter the length of side 1 of the triangle: ");
+        double triangleSide1 = scanner.nextDouble();
+        System.out.print("Enter the length of side 2 of the triangle: ");
+        double triangleSide2 = scanner.nextDouble();
+        System.out.print("Enter the length of side 3 of the triangle: ");
+        double triangleSide3 = scanner.nextDouble();
+        Triangle triangle = new Triangle(triangleSide1, triangleSide2, triangleSide3);
+
+        System.out.println("\nShapes and Calculations:");
+        System.out.println("Area of Circle: " + circle.calculateArea());
+        System.out.println("Perimeter of Circle: " + circle.calculatePerimeter());
+
+        System.out.println("Area of Triangle: " + triangle.calculateArea());
+        System.out.println("Perimeter of Triangle: " + triangle.calculatePerimeter());
+
+        scanner.close();
+    }
+}
