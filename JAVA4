@@ -1,0 +1,72 @@
+/*Design a base class shape with two double type values and member functions to input the data
+and compute_area() for calculating area of shape. Derive two classes: triangle and rectangle. Make
+compute_area() as abstract function and redefine this function in the derived class to suit their
+requirements. Write a program that accepts dimensions of triangle/rectangle and display
+calculated area. Implement dynamic binding for given case study */
+import java.util.Scanner;
+
+abstract class Shape {
+    double value1;
+    double value2;
+    Scanner sc = new Scanner(System.in);
+
+    void input() {
+        System.out.println("ENTER THE VALUE 1");
+        value1 = sc.nextDouble(); // Corrected method name to nextDouble
+        System.out.println("ENTER THE VALUE 2");
+        value2 = sc.nextDouble(); // Corrected method name to nextDouble
+    }
+
+    abstract void computeArea();
+}
+
+class Rectangle extends Shape {
+    void computeArea() {
+        double area;
+        System.out.println("AREA FOR RECTANGLE");
+        area = value1 * value2;
+        System.out.println("AREA FOR RECTANGLE: " + area);
+    }
+}
+
+class Triangle extends Shape {
+    void computeArea() {
+        double area;
+        System.out.println("AREA FOR TRIANGLE");
+        area = 0.5 * value1 * value2;
+        System.out.println("AREA FOR TRIANGLE: " + area);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        int choice;
+        Scanner sc = new Scanner(System.in);
+
+        do {
+            System.out.println("WHICH AREA IS TO FIND: 1.TRIANGLE 2.RECTANGLE 3.EXIT");
+            System.out.println("ENTER YOUR CHOICE:");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("AREA OF TRIANGLE");
+                    Shape t = new Triangle();
+                    t.input();
+                    t.computeArea();
+                    break;
+                case 2:
+                    System.out.println("AREA OF RECTANGLE");
+                    Shape s = new Rectangle();
+                    s.input();
+                    s.computeArea();
+                    break;
+                case 3:
+                    System.out.println("EXIT");
+                    break;
+                default:
+                    System.out.println("INVALID INPUT GIVEN");
+            }
+        } while (choice != 3);
+    }
+}
