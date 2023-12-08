@@ -1,0 +1,144 @@
+/*Design and develop inheritance for a given case study, identify objects and relationships and
+implement inheritance wherever applicable. Employee class hasEmp_name, Emp_id, Address,
+Mail_id, and Mobile_noas members. Inherit the classes: Programmer, Team Lead, Assistant Project
+Manager and Project Manager from employee class. Add Basic Pay (BP) as the member of all the
+inherited classes with 97% of BP as DA, 10 % of BP as HRA, 12% of BP as PF, 0.1% of BP for staff
+club fund. Generate pay slips for the employees with their gross and net salary. */
+
+import java.util.Scanner;
+
+class Employee {
+    int empid;
+    String empname, mailid, address, mobile;
+    float basicpay;
+
+    Scanner sc = new Scanner(System.in);
+
+    void getEmployeeDetails() {
+        System.out.println("Enter the employee details");
+
+        System.out.println("Enter the employee name");
+        empname = sc.nextLine(); // Corrected method name
+
+        System.out.println("Enter the employee address ");
+        address = sc.nextLine();
+
+        System.out.println("Enter the employee mailid");
+        mailid = sc.nextLine();
+
+        System.out.println("Enter the employee mobile");
+        mobile = sc.nextLine();
+
+        System.out.println("Enter the employee empid");
+        empid = sc.nextInt();
+    }
+
+    void generateSalary() {
+        float DA, HRA, PF, NET_SALARY, GROSS_SALARY; // Corrected variable names
+        DA = 0.97f * basicpay; // Corrected variable name and added 'f' for float literal
+        HRA = 0.10f * basicpay;
+        PF = 0.12f * basicpay;
+        GROSS_SALARY = DA + HRA + PF;
+        NET_SALARY = GROSS_SALARY - 1000;
+
+        System.out.println("SALARY SLIP IS GENERATED:");
+        System.out.println(".............DETAILS............");
+
+        System.out.println("NAME" + empname);
+        System.out.println("BASICPAY:" + basicpay);
+        System.out.println("Address:" + address); // Corrected variable name
+        System.out.println("Mailid:" + mailid);
+        System.out.println("MOBILE:" + mobile);
+        System.out.println("EMPID:" + empid);
+        System.out.println("............SALARY SLIP............");
+
+        System.out.println("DA:" + DA);
+        System.out.println("HRA:" + HRA);
+        System.out.println("PF:" + PF);
+        System.out.println("GROSS SALARY:" + GROSS_SALARY);
+        System.out.println("NET SALARY:" + NET_SALARY);
+    }
+}
+
+class Programmer extends Employee {
+    Scanner sc = new Scanner(System.in);
+
+    void setBasicPay() {
+        System.out.println("Enter the basic pay:");
+        basicpay = sc.nextFloat(); // Corrected method name and added 'f' for float literal
+    }
+}
+
+class TeamLead extends Employee {
+    Scanner sc = new Scanner(System.in);
+
+    void setBasicPay() {
+        System.out.println("Enter the basic pay:");
+        basicpay = sc.nextFloat();
+    }
+}
+
+class Assistant extends Employee {
+    Scanner sc = new Scanner(System.in);
+
+    void setBasicPay() {
+        System.out.println("Enter the basic pay:");
+        basicpay = sc.nextFloat();
+    }
+}
+
+class Project extends Employee {
+    Scanner sc = new Scanner(System.in);
+
+    void setBasicPay() {
+        System.out.println("Enter the basic pay:");
+        basicpay = sc.nextFloat();
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        int choice;
+        Scanner sc = new Scanner(System.in);
+        do {
+            System.out.println("ENTER YOUR CHOICE NO:");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    Programmer pgr = new Programmer();
+                    pgr.getEmployeeDetails();
+                    pgr.setBasicPay();
+                    pgr.generateSalary();
+                    break;
+
+                case 2:
+                    TeamLead t = new TeamLead();
+                    t.getEmployeeDetails();
+                    t.setBasicPay();
+                    t.generateSalary();
+                    break;
+
+                case 3:
+                    Assistant a = new Assistant();
+                    a.getEmployeeDetails();
+                    a.setBasicPay();
+                    a.generateSalary();
+                    break;
+
+                case 4:
+                    Project proj = new Project();
+                    proj.getEmployeeDetails();
+                    proj.setBasicPay();
+                    proj.generateSalary();
+                    break;
+
+                case 5:
+                    System.out.println("EXIT");
+                    break;
+
+                default:
+                    System.out.println("Invalid input");
+            }
+        } while (choice != 5);
+    }
+}
