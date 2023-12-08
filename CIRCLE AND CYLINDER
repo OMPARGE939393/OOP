@@ -27,6 +27,11 @@ class Circle extends Shape {
     double calculateArea() {
         return Math.PI * radius * radius;
     }
+
+    // Added getter method for radius
+    public double getRadius() {
+        return radius;
+    }
 }
 
 class Cylinder extends Circle {
