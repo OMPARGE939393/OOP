@@ -1,397 +1,222 @@
-/* 
-Assignment No.8
-Title:- File Handling.
-
-Problem Statement:- Implement a program for maintaining a database of student records using Files. 
-Student has Student_id, name, Roll_no, Class, marks and address. Display the data for few students. 
-1. Create Database 
-2. Display Database 
-3. Delete Records 
-4. Update Record 
-5. Search Record 
-
-*/
-
-//CODE
-
-// FILE NAME: Assignment_8.java
-
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class Assignment_8
-{
-   public static void main(String [] args)
-    {
-        int op;
-        Scanner sc = new Scanner(System.in);
-        StudentRecords sr = new StudentRecords();
-    
-        while(true)
-        {
-            System.out.println("1 - Add Record\n2 - Update Record\n3 - Display Record\n4 - Search Record\n5 - Delete Record\n6 - Clear All Records\n7 - Exit");
-            System.out.println();
-            op = sc.nextInt();
-            System.out.println();
-            switch(op)
-            {
-                case 1: sr.addRecord();
-                break;
-                
-                case 2: sr.updateRecord();
-                break;
-                
-                case 3: sr.displayRecords();
-                break;
-                
-                case 4: sr.searchRecords();
-                break;
-                
-                case 5: sr.deleteRecord();
-                break;
-                
-                case 6: sr.clearRecords();
-                break;
-                
-                case 7: sr.exit();
-                break;
-                
-                default: System.out.println("Invalid input.");
-            }
-            
-        }  
-    }  
+class Student {
+    private int studentId;
+    private String name;
+    private int rollNo;
+    private String className;
+    private double marks;
+    private String address;
+
+    public Student(int studentId, String name, int rollNo, String className, double marks, String address) {
+        this.studentId = studentId;
+        this.name = name;
+        this.rollNo = rollNo;
+        this.className = className;
+        this.marks = marks;
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Student ID: " + studentId +
+                "\nName: " + name +
+                "\nRoll Number: " + rollNo +
+                "\nClass: " + className +
+                "\nMarks: " + marks +
+                "\nAddress: " + address + "\n";
+    }
+
+    // Getters and setters if needed
 }
 
+ class StudentDatabase {
+    private static final String FILE_NAME = "student_database.txt";
 
-// FILE NAME: StudentRecords.java
-import java.util.*;
-import java.io.*;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-public class StudentRecords
-{
-    static void addRecord()
-    {
-        try
-        {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("st.txt")));
-            String stdName, address;
-            
-            int stdId, rollNo, std;
-            float marks;
-            String s;
-            boolean addMore = false;
-            
-            do
-            {
-                System.out.print("\nEnter student's name: ");
-                stdName = br.readLine();
-                
-                System.out.print("\nEnter student's id: ");
-                stdId = Integer.parseInt(br.readLine());
-                
-                System.out.print("\nEnter student's roll number: ");
-                rollNo = Integer.parseInt(br.readLine());
-                
-                System.out.print("\nEnter address: ");
-                address = br.readLine();
-                
-                System.out.print("\nEnter student's class: ");
-                std = Integer.parseInt(br.readLine());
-                
-                System.out.print("\nEnter marks: ");
-                marks = Float.parseFloat(br.readLine());
-                
-                pw.println(stdName + " " + stdId + " " + rollNo + " " + address + " " + std + " " + marks);
-                System.out.print("\nRecord added successfully.\nDo you want to add more?(Y/N): ");
-                
-                s = br.readLine();
-                if(s.equalsIgnoreCase("Y"))
-                {
-                    addMore = true;
-                }
-                else
-                {
-                    addMore = false;
-                }
-                
-            }
-            while(addMore);
-            
-            pw.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-    }
+        while (true) {
+            System.out.println("1 - Create Database");
+            System.out.println("2 - Display Database");
+            System.out.println("3 - Delete Record");
+            System.out.println("4 - Update Record");
+            System.out.println("5 - Exit");
+            System.out.print("Enter your choice: ");
 
-    static void deleteRecord()
-    {
-        try
-        {
-            BufferedReader file1 = new BufferedReader(new FileReader("st.txt"));
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("st1.txt", true)));
-            String name;
-            int flag = 0;
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Enter the name of the student you want to delete: ");
-            String searchName = sc.nextLine();
-            
-            while((name = file1.readLine())!=null)
-            {
-                String[]line = name.split(" ");
-                if(!searchName.equalsIgnoreCase(line[0]))
-                {
-                    pw.println(name);
-                    flag = 0;
-                }
-                else
-                {
-                    line[0] = "-";
-                    line[1] = "-";
-                    line[2] = "-";
-                    line[3] = "-";
-                    line[4] = "-";
-                    pw.println(line[0] + " "+ line[1] + " " + line[2] + " " + line[3] + " " +line[4]); 
-                    flag = 1;
-                    while((name = file1.readLine())!=null)
-                    {
-                        pw.println(name);
-                    }
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    createDatabase();
                     break;
+                case 2:
+                    displayDatabase();
+                    break;
+                case 3:
+                    deleteRecord();
+                    break;
+                case 4:
+                    updateRecord();
+                    break;
+                case 5:
+                    System.out.println("Exiting program.");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void createDatabase() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME, true))) {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Enter Student ID: ");
+            int studentId = scanner.nextInt();
+
+            System.out.print("Enter Name: ");
+            scanner.nextLine(); // consume newline
+            String name = scanner.nextLine();
+
+            System.out.print("Enter Roll Number: ");
+            int rollNo = scanner.nextInt();
+
+            System.out.print("Enter Class: ");
+            scanner.nextLine(); // consume newline
+            String className = scanner.nextLine();
+
+            System.out.print("Enter Marks: ");
+            double marks = scanner.nextDouble();
+
+            System.out.print("Enter Address: ");
+            scanner.nextLine(); // consume newline
+            String address = scanner.nextLine();
+
+            Student student = new Student(studentId, name, rollNo, className, marks, address);
+
+            writer.println(student.toString());
+            System.out.println("Record added successfully.");
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while creating the database: " + e.getMessage());
+        }
+    }
+
+    private static void displayDatabase() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while displaying the database: " + e.getMessage());
+        }
+    }
+
+    private static void deleteRecord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Student ID to delete: ");
+        int studentIdToDelete = scanner.nextInt();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+             PrintWriter writer = new PrintWriter(new FileWriter("temp_database.txt", true))) {
+
+            String line;
+            boolean recordDeleted = false;
+
+            while ((line = reader.readLine()) != null) {
+                // Assuming the Student ID is the first value in each line
+                int existingStudentId = Integer.parseInt(line.split(":")[1].trim());
+                if (existingStudentId != studentIdToDelete) {
+                    writer.println(line);
+                } else {
+                    recordDeleted = true;
                 }
             }
 
-            file1.close();
-            pw.close();
-            if(flag == 1)
-            {
-                File delName = new File("st.txt");
-                File oldName = new File("st1.txt");
-                File newName = new File("st.txt");
-                
-                if(delName.delete())
-                {
-                    System.out.println("Record deleted successfully.");
-                }
-                
-                else
-                {
-                    System.out.println("Error.");
-                }
-                
-                if(oldName.renameTo(newName))
-                {
-                pw.close();
-                    if(flag == 1)
-                    {
-                        File del_Name = new File("st.txt");
-                        File old_Name = new File("st1.txt");
-                        File new_Name = new File("st.txt");
-                        
-                        if(del_Name.delete())
-                        {
-                            System.out.println("Record deleted successfully.");
-                        }
-                        
-                        else
-                        {
-                            System.out.println("Error.");
-                        }
-                        
-                        if(old_Name.renameTo(newName))
-                        {
-                            System.out.println("Renamed successfully.");
-                        }
-                        
-                        else
-                        {
-                            System.out.println("Error.");
-                        }
-                    }
-                    
-                    else
-                    {
-                        System.out.println("Record not found.");
-                    }
-                }
+            if (recordDeleted) {
+                System.out.println("Record with Student ID " + studentIdToDelete + " deleted successfully.");
+            } else {
+                System.out.println("No record found with Student ID " + studentIdToDelete);
             }
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while deleting the record: " + e.getMessage());
         }
-        catch(Exception e)
-        {
-            System.out.println(e);
+
+        // Rename temp file to original file
+        File tempFile = new File("temp_database.txt");
+        File originalFile = new File(FILE_NAME);
+        if (tempFile.renameTo(originalFile)) {
+            System.out.println("Database updated successfully.");
+        } else {
+            System.out.println("Error updating database.");
         }
     }
-    
-    static void updateRecord()
-    {
-        try
-        {
-            BufferedReader file1 = new BufferedReader(new FileReader("st.txt"));
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("st1.txt")));
-            
-            String name;
-            int flag = 0;
-            
-            Scanner sc = new Scanner(System.in);
-            
-            System.out.print("Enter the name of the student you want to update: ");
-            String searchName = sc.nextLine();
-            
-            while((name = file1.readLine())!=null)
-            {
-                String[]line = name.split(" ");
-                if(!searchName.equalsIgnoreCase(line[0]))
-                {
-                    pw.println(name);
-                    flag = 0;
-                }
-                
-                else
-                {
-                    System.out.println("Record found.");
-                    System.out.println("Enter updated marks: ");
-                    
-                    float up_mark = sc.nextFloat();
-                    pw.println(line[0]+" "+line[1]+" "+line[2]+" "+line[3]+" "+line[4]+" "+up_mark);
-                    flag = 1;
-                    
-                    while((name = file1.readLine())!=null)
-                    {
-                        pw.println(name);
-                    }
-                break;
-                }
-            }
-            
-            file1.close();
-            pw.close();
-            if(flag == 1)
-            {
-                File delName = new File("st.txt");
-                File oldName = new File("st1.txt");
-                File newName = new File("st.txt");
-                
-                if(delName.delete())
-                {
+
+    private static void updateRecord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Student ID to update: ");
+        int studentIdToUpdate = scanner.nextInt();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+             PrintWriter writer = new PrintWriter(new FileWriter("temp_database.txt", true))) {
+
+            String line;
+            boolean recordUpdated = false;
+
+            while ((line = reader.readLine()) != null) {
+                // Assuming the Student ID is the first value in each line
+                int existingStudentId = Integer.parseInt(line.split(":")[1].trim());
+                if (existingStudentId == studentIdToUpdate) {
+                    System.out.println("Current details:\n" + line);
+                    System.out.println("Enter new details:");
+
+                    System.out.print("Enter Name: ");
+                    scanner.nextLine(); // consume newline
+                    String name = scanner.nextLine();
+
+                    System.out.print("Enter Roll Number: ");
+                    int rollNo = scanner.nextInt();
+
+                    System.out.print("Enter Class: ");
+                    scanner.nextLine(); // consume newline
+                    String className = scanner.nextLine();
+
+                    System.out.print("Enter Marks: ");
+                    double marks = scanner.nextDouble();
+
+                    System.out.print("Enter Address: ");
+                    scanner.nextLine(); // consume newline
+                    String address = scanner.nextLine();
+
+                    Student updatedStudent = new Student(studentIdToUpdate, name, rollNo, className, marks, address);
+
+                    writer.println(updatedStudent.toString());
+                    recordUpdated = true;
                     System.out.println("Record updated successfully.");
-                }
-                
-                else
-                {
-                    System.out.println("Error.");
-                }
-                
-                if(oldName.renameTo(newName))
-                {
-                    System.out.println("Renamed successfully.");
-                }
-                else
-                {
-                    System.out.println("Error.");
+                } else {
+                    writer.println(line);
                 }
             }
-           
-            else
-            {
-                System.out.println("Record not found.");
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-    }
 
-    static void searchRecords()
-    {
-        try
-        {
-            BufferedReader file = new BufferedReader(new FileReader("st.txt"));
-            String name;
-            int flag = 0;
-            Scanner sc = new Scanner(System.in);
-            
-            System.out.print("Enter the id of the student you want to search: ");
-            String searchName = sc.nextLine();
-            
-            while((name = file.readLine())!= null)
-            {
-                String[]line = name.split(" ");
-                if(searchName.equalsIgnoreCase(line[1]))
-                {
-                    System.out.println("Record found.");
-                    System.out.println(name);
-                    System.out.println();
-                    
-                    flag = 1;
-                    break;
-                }
+            if (!recordUpdated) {
+                System.out.println("No record found with Student ID " + studentIdToUpdate);
             }
-            
-            if(flag == 0)
-            {
-                System.out.println("Record not found.");
-            }
-            
-            file.close();      
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-    }
-    static void displayRecords()
-    {
-        try
-        {
-            BufferedReader file = new BufferedReader(new FileReader("st.txt"));
-            String name;
-            int i = 1;
-            
-            while((name = file.readLine())!= null)
-            {
-                System.out.println(name);
-                System.out.println("\n");
-            }
-            
-            file.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-    }
 
-    static void clearRecords()
-    {
-        try
-        {
-            File delName = new File("st.txt");
-            if(delName.delete())
-            {
-                System.out.println("Cleared records.");
-            }
-            
-            else
-            {
-                System.out.println("Error.");
-            }
-            
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("st.txt")));
-            pw.close();
-            System.out.println("All records are cleared successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating the record: " + e.getMessage());
         }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-    }
 
-    static void exit()  
-    {
-        System.exit(0);
+        // Rename temp file to original file
+        File tempFile = new File("temp_database.txt");
+        File originalFile = new File(FILE_NAME);
+        if (tempFile.renameTo(originalFile)) {
+            System.out.println("Database updated successfully.");
+        } else {
+            System.out.println("Error updating database.");
+        }
     }
 }
