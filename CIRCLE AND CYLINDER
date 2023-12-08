@@ -1,0 +1,69 @@
+import java.util.Scanner;
+
+abstract class Shape {
+    abstract void draw();
+    abstract double calculateArea();
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    void draw() {
+        System.out.println("Drawing Circle");
+    }
+
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Cylinder extends Circle {
+    private double height;
+
+    public Cylinder(double radius, double height) {
+        super(radius);
+        this.height = height;
+    }
+
+    @Override
+    void draw() {
+        System.out.println("Drawing Cylinder");
+    }
+
+    @Override
+    double calculateArea() {
+        // Total surface area of the cylinder: 2πr² + 2πrh
+        return 2 * super.calculateArea() + 2 * Math.PI * getRadius() * height;
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the radius of the circle: ");
+        double circleRadius = scanner.nextDouble();
+        Circle circle = new Circle(circleRadius);
+
+        System.out.print("Enter the radius of the cylinder: ");
+        double cylinderRadius = scanner.nextDouble();
+        System.out.print("Enter the height of the cylinder: ");
+        double cylinderHeight = scanner.nextDouble();
+        Cylinder cylinder = new Cylinder(cylinderRadius, cylinderHeight);
+
+        System.out.println("\nShapes and Areas:");
+        circle.draw();
+        System.out.println("Area of Circle: " + circle.calculateArea());
+
+        cylinder.draw();
+        System.out.println("Total Surface Area of Cylinder: " + cylinder.calculateArea());
+
+        scanner.close();
+    }
+}
