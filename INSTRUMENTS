@@ -1,0 +1,44 @@
+abstract class Instrument {
+    abstract void play();
+    abstract void tune();
+}
+
+class Glockenspiel extends Instrument {
+    @Override
+    void play() {
+        System.out.println("Glockenspiel is playing");
+    }
+
+    @Override
+    void tune() {
+        System.out.println("Tuning the Glockenspiel");
+    }
+}
+
+class Violin extends Instrument {
+    @Override
+    void play() {
+        System.out.println("Violin is playing");
+    }
+
+    @Override
+    void tune() {
+        System.out.println("Tuning the Violin");
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Glockenspiel glockenspiel = new Glockenspiel();
+        Violin violin = new Violin();
+
+        System.out.println("Glockenspiel:");
+        glockenspiel.tune();
+        glockenspiel.play();
+        System.out.println();
+
+        System.out.println("Violin:");
+        violin.tune();
+        violin.play();
+    }
+}
