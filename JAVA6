@@ -1,0 +1,72 @@
+/*
+ Implement a program to handle Arithmetic exception, Array Index Out of Bounds. The user enters
+two numbers Num1 and Num2. The division of Num1 and Num2 is displayed. If Num1 and Num2
+are not integers, the program would throw a Number Format Exception. If Num2 were zero, the
+program would throw an Arithmetic Exception. Display the exception
+ */
+import java.util.Scanner;
+
+class ArrayIndexOutOfBoundsExceptionExample {
+    public void ArrayIndexOutOfBoundsExceptionMethod() {
+        Scanner sc = new Scanner(System.in);
+        try {
+            int index;
+            int arr[] = {1, 2, 3, 4, 5};
+            System.out.println("ENTER THE INDEX: ");
+            index = sc.nextInt();
+            System.out.println("ELEMENT AT INDEX " + index + " IS: " + arr[index]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e + " ENTER VALID INDEX");
+        }
+    }
+}
+
+class ArithmeticExceptionAndNumberFormatExceptionExample {
+    public float division(int Num1, int Num2) {
+        return  Num1 / Num2;
+    }
+
+    public void arithmeticExceptionAndNumberFormatExceptionMethod() {
+        try {
+            Scanner sc = new Scanner(System.in);
+            String Num1, Num2;
+            System.out.println("ENTER THE NO 1");
+            Num1 = sc.nextLine();
+            System.out.println("ENTER THE NO 2");
+            Num2 = sc.nextLine();
+            System.out.println("DIVISION OF Num1:" + Num1 + " and Num2:" + Num2 + " is " +
+                    division(Integer.parseInt(Num1), Integer.parseInt(Num2)));
+        } catch (ArithmeticException e) {
+            System.out.println(e + " NUM2 cannot be zero");
+        } catch (NumberFormatException e) {
+            System.out.println(e + " ENTER THE INTEGER VALUES OF NUM1 AND NUM2");
+        }
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        int choice;
+        do {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("1. ARRAY OUT INDEX 2. ARITHMETIC EXPRESSION NUMBERFORMATEXCEPTION 3.EXIT");
+            System.out.println("ENTER YOUR CHOICE:");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    ArrayIndexOutOfBoundsExceptionExample a = new ArrayIndexOutOfBoundsExceptionExample();
+                    a.ArrayIndexOutOfBoundsExceptionMethod();
+                    break;
+                case 2:
+                    ArithmeticExceptionAndNumberFormatExceptionExample b = new ArithmeticExceptionAndNumberFormatExceptionExample();
+                    b.arithmeticExceptionAndNumberFormatExceptionMethod();
+                    break;
+                case 3:
+                    System.out.println("EXIT");
+                    break;
+                default:
+                    System.out.println("ENTER THE VALID CHOICE");
+            }
+        } while (choice != 3);
+    }
+}
