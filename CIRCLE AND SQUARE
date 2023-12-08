@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+abstract class Shape {
+    abstract void draw();
+    abstract double calculateArea();
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    void draw() {
+        System.out.println("Drawing Circle");
+    }
+
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Square extends Shape {
+    private double side;
+
+    public Square(double side) {
+        this.side = side;
+    }
+
+    @Override
+    void draw() {
+        System.out.println("Drawing Square");
+    }
+
+    @Override
+    double calculateArea() {
+        return side * side;
+    }
+}
+
+class Triangle extends Shape {
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    void draw() {
+        System.out.println("Drawing Triangle");
+    }
+
+    @Override
+    double calculateArea() {
+        return 0.5 * base * height;
+    }
+}
+
+ class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the radius of the circle: ");
+        double circleRadius = scanner.nextDouble();
+        Circle circle = new Circle(circleRadius);
+
+        System.out.print("Enter the side of the square: ");
+        double squareSide = scanner.nextDouble();
+        Square square = new Square(squareSide);
+
+        System.out.print("Enter the base of the triangle: ");
+        double triangleBase = scanner.nextDouble();
+        System.out.print("Enter the height of the triangle: ");
+        double triangleHeight = scanner.nextDouble();
+        Triangle triangle = new Triangle(triangleBase, triangleHeight);
+
+        System.out.println("\nShapes and Areas:");
+        circle.draw();
+        System.out.println("Area of Circle: " + circle.calculateArea());
+
+        square.draw();
+        System.out.println("Area of Square: " + square.calculateArea());
+
+        triangle.draw();
+        System.out.println("Area of Triangle: " + triangle.calculateArea());
+
+        scanner.close();
+    }
+}
