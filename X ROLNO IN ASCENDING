@@ -1,22 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
 
+using namespace std;
 
 struct Student {
     int rollNo;
-    char name[50];
+    string name;
     float sgpa;
 };
 
-int partition(struct Student arr[], int low, int high);
+int partition(Student arr[], int low, int high);
 
-void bubbleSort(struct Student arr[], int n) {
+void bubbleSort(Student arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j].rollNo > arr[j + 1].rollNo) {
                 // Swap the students
-                struct Student temp = arr[j];
+                Student temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
             }
@@ -24,8 +23,7 @@ void bubbleSort(struct Student arr[], int n) {
     }
 }
 
-//  quick sort on the student  based on SGPA
-void quickSort(struct Student arr[], int low, int high) {
+void quickSort(Student arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
 
@@ -34,7 +32,7 @@ void quickSort(struct Student arr[], int low, int high) {
     }
 }
 
-int partition(struct Student arr[], int low, int high) {
+int partition(Student arr[], int low, int high) {
     float pivot = arr[high].sgpa;
     int i = (low - 1);
 
@@ -42,13 +40,13 @@ int partition(struct Student arr[], int low, int high) {
         if (arr[j].sgpa >= pivot) {
             i++;
             // Swap the students
-            struct Student temp = arr[i];
+            Student temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
         }
     }
 
-    struct Student temp = arr[i + 1];
+    Student temp = arr[i + 1];
     arr[i + 1] = arr[high];
     arr[high] = temp;
 
@@ -56,27 +54,26 @@ int partition(struct Student arr[], int low, int high) {
 }
 
 int main() {
-    struct Student students[] = {
+    const int numStudents = 3;
+    Student students[numStudents] = {
         {101, "Alice", 8.5},
         {102, "Bob", 9.0},
         // Add more records here
         {115, "Eve", 7.8}
     };
 
-    int n = sizeof(students) / sizeof(students[0]);
+    bubbleSort(students, numStudents);
 
-    bubbleSort(students, n);
-
-    printf("Roll Call List (Sorted by Roll Number):\n");
-    for (int i = 0; i < n; i++) {
-        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+    cout << "Roll Call List (Sorted by Roll Number):\n";
+    for (int i = 0; i < numStudents; i++) {
+        cout << "Roll No: " << students[i].rollNo << ", Name: " << students[i].name << ", SGPA: " << students[i].sgpa << "\n";
     }
 
-    quickSort(students, 0, n - 1);
+    quickSort(students, 0, numStudents - 1);
 
-    printf("\nTop 10 Toppers (Sorted by SGPA):\n");
-    for (int i = 0; i < 10 && i < n; i++) {
-        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+    cout << "\nTop 10 Toppers (Sorted by SGPA):\n";
+    for (int i = 0; i < min(10, numStudents); i++) {
+        cout << "Roll No: " << students[i].rollNo << ", Name: " << students[i].name << ", SGPA: " << students[i].sgpa << "\n";
     }
 
     return 0;
