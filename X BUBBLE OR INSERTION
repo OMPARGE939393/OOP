@@ -1,0 +1,97 @@
+#include<iostream>
+using namespace std;
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float sgpa;
+};
+
+int partition(struct Student arr[], int low, int high);
+
+void quickSort(struct Student arr[], int low, int high);
+
+void searchBySGPA(struct Student arr[], int n, float targetSGPA);
+
+int main() {
+    // Example data with at least 15 records
+    struct Student students[] = {
+        {101, "Alice", 8.5},
+        {102, "Bob", 9.0},
+        {103, "Charlie", 8.5},
+        {104, "David", 9.0},
+        // Add more records here
+
+        {115, "Eve", 7.8}
+    };
+
+    int n = sizeof(students) / sizeof(students[0]);
+
+    float targetSGPA = 8.5;
+    searchBySGPA(students, n, targetSGPA);
+
+    quickSort(students, 0, n - 1);
+
+    printf("\nTop 10 Toppers (Sorted by SGPA):\n");
+    for (int i = 0; i < 10 && i < n; i++) {
+        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+    }
+
+    return 0;
+}
+
+int partition(struct Student arr[], int low, int high) {
+    float pivot = arr[high].sgpa;
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j].sgpa >= pivot) {
+            i++;
+            struct Student temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    struct Student temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+
+    return (i + 1);
+}
+
+void quickSort(struct Student arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void searchBySGPA(struct Student arr[], int n, float targetSGPA) {
+    int found = 0;
+
+    printf("\nStudents with SGPA %.2f:\n", targetSGPA);
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i].sgpa == targetSGPA) {
+            printf("Roll No: %d, Name: %s, SGPA: %.2f\n", arr[i].rollNo, arr[i].name, arr[i].sgpa);
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("No students found with SGPA %.2f\n", targetSGPA);
+    }
+    else {
+        printf("\nOther students with the same SGPA:\n");
+        for (int i = 0; i < n; i++) {
+            if (arr[i].sgpa != targetSGPA) {
+                continue;
+            }
+
+            printf("Roll No: %d, Name: %s, SGPA: %.2f\n", arr[i].rollNo, arr[i].name, arr[i].sgpa);
+        }
+    }
+}
