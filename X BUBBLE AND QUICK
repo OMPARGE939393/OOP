@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float sgpa;
+};
+
+int partition(struct Student arr[], int low, int high);
+
+void bubbleSort(struct Student arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j].rollNo > arr[j + 1].rollNo) {
+                // Swap the students
+                struct Student temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+//  quick sort on the student  based on SGPA
+void quickSort(struct Student arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int partition(struct Student arr[], int low, int high) {
+    float pivot = arr[high].sgpa;
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j].sgpa >= pivot) {
+            i++;
+            // Swap the students
+            struct Student temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    struct Student temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+
+    return (i + 1);
+}
+
+int main() {
+    struct Student students[] = {
+        {101, "Alice", 8.5},
+        {102, "Bob", 9.0},
+        // Add more records here
+        {115, "Eve", 7.8}
+    };
+
+    int n = sizeof(students) / sizeof(students[0]);
+
+    bubbleSort(students, n);
+
+    printf("Roll Call List (Sorted by Roll Number):\n");
+    for (int i = 0; i < n; i++) {
+        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+    }
+
+    quickSort(students, 0, n - 1);
+
+    printf("\nTop 10 Toppers (Sorted by SGPA):\n");
+    for (int i = 0; i < 10 && i < n; i++) {
+        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+    }
+
+    return 0;
+}
