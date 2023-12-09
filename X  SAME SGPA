@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 struct Student {
@@ -7,21 +7,20 @@ struct Student {
     float sgpa;
 };
 
-int partition(struct Student arr[], int low, int high);
+int partition(Student arr[], int low, int high);
 
-void quickSort(struct Student arr[], int low, int high);
+void quickSort(Student arr[], int low, int high);
 
-void searchBySGPA(struct Student arr[], int n, float targetSGPA);
+void searchBySGPA(Student arr[], int n, float targetSGPA);
 
 int main() {
     // Example data with at least 15 records
-    struct Student students[] = {
+    Student students[] = {
         {101, "Alice", 8.5},
         {102, "Bob", 9.0},
         {103, "Charlie", 8.5},
         {104, "David", 9.0},
         // Add more records here
-
         {115, "Eve", 7.8}
     };
 
@@ -32,35 +31,30 @@ int main() {
 
     quickSort(students, 0, n - 1);
 
-    printf("\nTop 10 Toppers (Sorted by SGPA):\n");
+    cout << "\nTop 10 Toppers (Sorted by SGPA):\n";
     for (int i = 0; i < 10 && i < n; i++) {
-        printf("Roll No: %d, Name: %s, SGPA: %.2f\n", students[i].rollNo, students[i].name, students[i].sgpa);
+        cout << "Roll No: " << students[i].rollNo << ", Name: " << students[i].name << ", SGPA: " << students[i].sgpa << endl;
     }
 
     return 0;
 }
 
-int partition(struct Student arr[], int low, int high) {
+int partition(Student arr[], int low, int high) {
     float pivot = arr[high].sgpa;
     int i = (low - 1);
 
     for (int j = low; j <= high - 1; j++) {
         if (arr[j].sgpa >= pivot) {
+            swap(arr[i + 1], arr[j]);
             i++;
-            struct Student temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
         }
     }
 
-    struct Student temp = arr[i + 1];
-    arr[i + 1] = arr[high];
-    arr[high] = temp;
-
+    swap(arr[i + 1], arr[high]);
     return (i + 1);
 }
 
-void quickSort(struct Student arr[], int low, int high) {
+void quickSort(Student arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
 
@@ -69,29 +63,28 @@ void quickSort(struct Student arr[], int low, int high) {
     }
 }
 
-void searchBySGPA(struct Student arr[], int n, float targetSGPA) {
+void searchBySGPA(Student arr[], int n, float targetSGPA) {
     int found = 0;
 
-    printf("\nStudents with SGPA %.2f:\n", targetSGPA);
+    cout << "\nStudents with SGPA " << targetSGPA << ":\n";
 
     for (int i = 0; i < n; i++) {
         if (arr[i].sgpa == targetSGPA) {
-            printf("Roll No: %d, Name: %s, SGPA: %.2f\n", arr[i].rollNo, arr[i].name, arr[i].sgpa);
+            cout << "Roll No: " << arr[i].rollNo << ", Name: " << arr[i].name << ", SGPA: " << arr[i].sgpa << endl;
             found = 1;
         }
     }
 
     if (!found) {
-        printf("No students found with SGPA %.2f\n", targetSGPA);
-    }
-    else {
-        printf("\nOther students with the same SGPA:\n");
+        cout << "No students found with SGPA " << targetSGPA << endl;
+    } else {
+        cout << "\nOther students with the same SGPA:\n";
         for (int i = 0; i < n; i++) {
             if (arr[i].sgpa != targetSGPA) {
                 continue;
             }
 
-            printf("Roll No: %d, Name: %s, SGPA: %.2f\n", arr[i].rollNo, arr[i].name, arr[i].sgpa);
+            cout << "Roll No: " << arr[i].rollNo << ", Name: " << arr[i].name << ", SGPA: " << arr[i].sgpa << endl;
         }
     }
 }
