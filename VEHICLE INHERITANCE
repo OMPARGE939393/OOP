@@ -5,9 +5,6 @@ properties such as make, model, year, and fuel type. Implement methods for calcu
 fuel efficiency, distance traveled, and maximum speed.
 
  */
-
-
-
 class Vehicle {
     protected String make;
     protected String model;
@@ -42,11 +39,8 @@ class Vehicle {
 }
 
 class Truck extends Vehicle {
-    private int cargoCapacity;
-
-    public Truck(String make, String model, int year, String fuelType, int cargoCapacity) {
+    public Truck(String make, String model, int year, String fuelType) {
         super(make, model, year, fuelType);
-        this.cargoCapacity = cargoCapacity;
     }
 
     @Override
@@ -66,11 +60,8 @@ class Truck extends Vehicle {
 }
 
 class Car extends Vehicle {
-    private int passengerCapacity;
-
-    public Car(String make, String model, int year, String fuelType, int passengerCapacity) {
+    public Car(String make, String model, int year, String fuelType) {
         super(make, model, year, fuelType);
-        this.passengerCapacity = passengerCapacity;
     }
 
     @Override
@@ -90,11 +81,8 @@ class Car extends Vehicle {
 }
 
 class Motorcycle extends Vehicle {
-    private boolean hasFairing;
-
-    public Motorcycle(String make, String model, int year, String fuelType, boolean hasFairing) {
+    public Motorcycle(String make, String model, int year, String fuelType) {
         super(make, model, year, fuelType);
-        this.hasFairing = hasFairing;
     }
 
     @Override
@@ -115,9 +103,9 @@ class Motorcycle extends Vehicle {
 
  class Main {
     public static void main(String[] args) {
-        Truck truck = new Truck("Ford", "F-150", 2022, "Gasoline", 5000);
-        Car car = new Car("Toyota", "Camry", 2022, "Gasoline", 5);
-        Motorcycle motorcycle = new Motorcycle("Harley-Davidson", "Sportster", 2022, "Gasoline", true);
+        Truck truck = new Truck("Ford", "F-150", 2022, "Gasoline");
+        Car car = new Car("Toyota", "Camry", 2022, "Gasoline");
+        Motorcycle motorcycle = new Motorcycle("Harley-Davidson", "Sportster", 2022, "Gasoline");
 
         System.out.println("Truck Details:");
         truck.displayDetails();
