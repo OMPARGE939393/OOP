@@ -3,14 +3,13 @@
 
 using namespace std;
 
-// Node structure 
+// Node structure
 struct Node {
     float data;
     Node* next;
 
     Node(float val) : data(val), next(nullptr) {}
 };
-
 
 class Stack {
 private:
@@ -19,18 +18,16 @@ private:
 public:
     Stack() : top(nullptr) {}
 
-    k
     void push(float val) {
         Node* newNode = new Node(val);
         newNode->next = top;
         top = newNode;
     }
 
-   
     float pop() {
         if (isEmpty()) {
             cerr << "Error: Stack underflow\n";
-            return 0.0; 
+            return 0.0;
         }
 
         Node* temp = top;
