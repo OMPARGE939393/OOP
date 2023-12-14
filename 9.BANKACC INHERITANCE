@@ -48,7 +48,7 @@ class SavingsAccount extends BankAccount {
     }
 }
 
- class Main {
+class Main {
     public static void main(String[] args) {
         // Example usage
         BankAccount account1 = new BankAccount(500);
@@ -61,4 +61,3 @@ class SavingsAccount extends BankAccount {
         savingsAccount1.withdraw(200);
     }
 }
-
