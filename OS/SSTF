@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define MAX_REQUESTS 100
+
+// Function to find the closest request to the current head position
+int find_closest_request(int requests[], int n, int head, int visited[]) {
+    int min_distance = __INT_MAX__;
+    int index = -1;
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {  // Check if the request is unvisited
+            int distance = abs(requests[i] - head);
+            if (distance < min_distance) {
+                min_distance = distance;
+                index = i;
+            }
+        }
+    }
+    return index;
+}
+
+// SSTF Disk Scheduling Function
+void sstf_disk_scheduling(int requests[], int n, int head) {
+    int total_seek_time = 0;
+    int visited[MAX_REQUESTS] = {0};  // Track visited requests
+    int seek_sequence[MAX_REQUESTS];
+    
+    printf("Seek Sequence: %d", head);
+    for (int i = 0; i < n; i++) {
+        int closest_index = find_closest_request(requests, n, head, visited);
+        if (closest_index == -1) break;  // All requests visited
+        
+        visited[closest_index] = 1;  // Mark request as visited
+        int seek_time = abs(requests[closest_index] - head);
+        total_seek_time += seek_time;
+        
+        head = requests[closest_index];  // Move head to the new position
+        seek_sequence[i] = head;
+        
+        printf(" -> %d", head);
+    }
+    printf("\nTotal Seek Time: %d\n", total_seek_time);
+    printf("Average Seek Time: %.2f\n", (float)total_seek_time / n);
+}
+
+int main() {
+    int n, head, requests[MAX_REQUESTS];
+    
+    // Input number of requests
+    printf("Enter the number of disk requests: ");
+    scanf("%d", &n);
+    
+    // Input the requests
+    printf("Enter the disk requests:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &requests[i]);
+    }
+    
+    // Input initial head position
+    printf("Enter the initial head position: ");
+    scanf("%d", &head);
+    
+    // Perform SSTF Disk Scheduling
+    sstf_disk_scheduling(requests, n, head);
+
+    return 0;
+}
