@@ -1,0 +1,89 @@
+#include <stdio.h>
+
+int findOptimal(int pages[], int frame_count, int current_index, int n, int frames[]) {
+    int i, j, pos = -1, farthest = current_index;
+    
+    for(i = 0; i < frame_count; i++) {
+        int next_use = n;  // Assume the page will not be used again
+        for(j = current_index + 1; j < n; j++) {
+            if(frames[i] == pages[j]) {
+                next_use = j;  // Update next usage time
+                break;
+            }
+        }
+        if(next_use > farthest) {
+            farthest = next_use;
+            pos = i;
+        }
+    }
+
+    return (pos == -1) ? 0 : pos;
+}
+
+int main() {
+    int pages[30], frames[3];
+    int frame_count = 3;
+    int n, i, j, page_faults = 0, page_hits = 0, pos;
+    int flag1, flag2;
+
+    // Input number of pages and page sequence
+    printf("Enter the number of pages: ");
+    scanf("%d", &n);
+    printf("Enter the page sequence: ");
+    for(i = 0; i < n; i++) {
+        scanf("%d", &pages[i]);
+    }
+
+    // Initialize frames
+    for(i = 0; i < frame_count; i++) {
+        frames[i] = -1;
+    }
+
+    // Process each page
+    for(i = 0; i < n; i++) {
+        flag1 = flag2 = 0;
+
+        // Check if page is already in one of the frames (page hit)
+        for(j = 0; j < frame_count; j++) {
+            if(frames[j] == pages[i]) {
+                flag1 = flag2 = 1;
+                page_hits++;
+                break;
+            }
+        }
+
+        // Page fault handling
+        if(flag1 == 0) {
+            for(j = 0; j < frame_count; j++) {
+                if(frames[j] == -1) {  // Check for empty frame
+                    page_faults++;
+                    frames[j] = pages[i];
+                    flag2 = 1;
+                    break;
+                }
+            }
+        }
+
+        // Replace page using Optimal algorithm if no empty frame is found
+        if(flag2 == 0) {
+            pos = findOptimal(pages, frame_count, i, n, frames);  // Find optimal position to replace
+            frames[pos] = pages[i];
+            page_faults++;
+        }
+
+        // Display current state of frames
+        printf("\nFrames after processing page %d: ", pages[i]);
+        for(j = 0; j < frame_count; j++) {
+            if(frames[j] == -1)
+                printf(" - ");
+            else
+                printf("%d ", frames[j]);
+        }
+    }
+
+    // Display total page faults and hits
+    printf("\n\nTotal Page Faults: %d", page_faults);
+    printf("\nTotal Page Hits: %d\n", page_hits);
+
+    return 0;
+}
