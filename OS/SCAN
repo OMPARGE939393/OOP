@@ -1,97 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_REQUESTS 100
-
-// Function to perform SCAN Disk Scheduling
-void scan_disk_scheduling(int requests[], int n, int head, int disk_size) {
-    int total_seek_time = 0;
-    int seek_sequence[MAX_REQUESTS];
-    int left[MAX_REQUESTS], right[MAX_REQUESTS];
-    int i, j = 0;
-
-    // Separate the requests into left and right of the current head position
-    for (i = 0; i < n; i++) {
-        if (requests[i] < head) {
-            left[j++] = requests[i];
-        } else {
-            right[i - j] = requests[i];
-        }
-    }
-
-    // Sort the left and right arrays
+void sort(int arr[], int n) {
     int temp;
-    for (i = 0; i < j - 1; i++) {
-        for (int k = i + 1; k < j; k++) {
-            if (left[i] < left[k]) {
-                temp = left[i];
-                left[i] = left[k];
-                left[k] = temp;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
             }
         }
     }
-    
-    for (i = 0; i < n - j - 1; i++) {
-        for (int k = i + 1; k < n - j; k++) {
-            if (right[i] > right[k]) {
-                temp = right[i];
-                right[i] = right[k];
-                right[k] = temp;
-            }
+}
+
+void scan_disk_scheduling(int requests[], int n, int head, int direction, int disk_size) {
+    int seek_sequence[100];
+    int seek_count = 0, index = 0;
+
+    // Sort the request array
+    sort(requests, n);
+
+    // Find the request closest to the initial head position in the specified direction
+    int pos;
+    for (pos = 0; pos < n; pos++) {
+        if (requests[pos] >= head) break;
+    }
+
+    // Move in the initial direction
+    if (direction == 1) {  // moving towards the end of the disk
+        for (int i = pos; i < n; i++) {
+            seek_sequence[index++] = requests[i];
+            seek_count += abs(requests[i] - head);
+            head = requests[i];
+        }
+        // Go to the end of the disk and then reverse direction
+        seek_sequence[index++] = disk_size - 1;
+        seek_count += abs(disk_size - 1 - head);
+        head = disk_size - 1;
+
+        // Now move towards the start of the disk
+        for (int i = pos - 1; i >= 0; i--) {
+            seek_sequence[index++] = requests[i];
+            seek_count += abs(requests[i] - head);
+            head = requests[i];
+        }
+    } else {  // moving towards the start of the disk
+        for (int i = pos - 1; i >= 0; i--) {
+            seek_sequence[index++] = requests[i];
+            seek_count += abs(requests[i] - head);
+            head = requests[i];
+        }
+        // Go to the start of the disk and then reverse direction
+        seek_sequence[index++] = 0;
+        seek_count += abs(head - 0);
+        head = 0;
+
+        // Now move towards the end of the disk
+        for (int i = pos; i < n; i++) {
+            seek_sequence[index++] = requests[i];
+            seek_count += abs(requests[i] - head);
+            head = requests[i];
         }
     }
 
-    // Start servicing requests to the right first
-    int count = 0;
-    int current_position = head;
-
-    // Move to the rightmost end and service requests
-    for (i = 0; i < n - j; i++) {
-        seek_sequence[count++] = right[i];
-        total_seek_time += abs(current_position - right[i]);
-        current_position = right[i];
-    }
-
-    // Now reverse direction to the leftmost end and service remaining requests
-    total_seek_time += abs(current_position - (disk_size - 1));
-    current_position = disk_size - 1; // Move to the rightmost track
-    
-    for (i = j - 1; i >= 0; i--) {
-        seek_sequence[count++] = left[i];
-        total_seek_time += abs(current_position - left[i]);
-        current_position = left[i];
-    }
-
-    // Output the seek sequence and total seek time
-    printf("Seek Sequence: ");
-    for (i = 0; i < n; i++) {
+    printf("Total seek operations: %d\n", seek_count);
+    printf("Seek sequence: ");
+    for (int i = 0; i < index; i++) {
         printf("%d ", seek_sequence[i]);
     }
-    printf("\nTotal Seek Time: %d\n", total_seek_time);
-    printf("Average Seek Time: %.2f\n", (float)total_seek_time / n);
+    printf("\n");
 }
 
 int main() {
-    int n, head, disk_size, requests[MAX_REQUESTS];
+    int disk_size, head, direction;
+    int n; // Number of requests
 
-    // Input the number of requests, disk size, and requests
-    printf("Enter the number of disk requests: ");
-    scanf("%d", &n);
-
-    printf("Enter the disk size (max track number): ");
+    printf("Enter the disk size: ");
     scanf("%d", &disk_size);
 
-    printf("Enter the disk requests:\n");
+    printf("Enter the number of requests: ");
+    scanf("%d", &n);
+
+    int requests[n];
+    printf("Enter the request sequence:\n");
     for (int i = 0; i < n; i++) {
         scanf("%d", &requests[i]);
     }
 
-    // Input the initial head position
     printf("Enter the initial head position: ");
     scanf("%d", &head);
 
-    // Perform SCAN Disk Scheduling
-    scan_disk_scheduling(requests, n, head, disk_size);
+    printf("Enter the initial direction (1 for high, 0 for low): ");
+    scanf("%d", &direction);
+
+    scan_disk_scheduling(requests, n, head, direction, disk_size);
 
     return 0;
 }
+
