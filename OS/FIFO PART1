@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#define FIFO1 "/tmp/fifo1"
+#define FIFO2 "/tmp/fifo2"
+#define BUFFER_SIZE 1024
+
+int main() {
+    char input[BUFFER_SIZE], output[BUFFER_SIZE];
+    int fd1, fd2;
+
+    mkfifo(FIFO1, 0666); mkfifo(FIFO2, 0666);
+
+    while (1) {
+        printf("Enter a sentence (or 'exit' to quit): ");
+        fgets(input, BUFFER_SIZE, stdin);
+
+        if (strncmp(input, "exit", 4) == 0) break;
+
+        if ((fd1 = open(FIFO1, O_WRONLY)) == -1) {
+            perror("Error opening FIFO1. Process 2 required.");
+            return 1;
+        }
+        write(fd1, input, strlen(input) + 1); close(fd1);
+
+        if ((fd2 = open(FIFO2, O_RDONLY)) == -1) {
+            perror("Error opening FIFO2. Process 2 required.");
+            return 1;
+        }
+        read(fd2, output, BUFFER_SIZE); close(fd2);
+
+        printf("Received from Process 2:\n%s\n", output);
+    }
+
+    unlink(FIFO1); unlink(FIFO2);
+    return 0;
+}
