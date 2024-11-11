@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+
+#define FIFO1 "/tmp/fifo1"
+#define FIFO2 "/tmp/fifo2"
+#define BUFFER_SIZE 1024
+
+// Function to count characters, words, and lines
+void count_characters_words_lines(char *text, int *char_count, int *word_count, int *line_count) {
+    *char_count = *word_count = *line_count = 0;
+    int in_word = 0;
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        (*char_count)++;
+        if (text[i] == '\n') (*line_count)++;
+
+        // Count words based on spaces and punctuation
+        if (isspace(text[i])) {
+            in_word = 0;
+        } else if (!in_word) {
+            in_word = 1;
+            (*word_count)++;
+        }
+    }
+
+    // If the last character is not a newline, count the last line
+    if (text[*char_count - 1] != '\n') (*line_count)++;
+}
+
+int main() {
+    char input[BUFFER_SIZE], result[BUFFER_SIZE];
+    int fd1, fd2;
+
+    // Create FIFOs if they don't already exist
+    mkfifo(FIFO1, 0666);
+    mkfifo(FIFO2, 0666);
+
+    while (1) {
+        // Open FIFO1 for reading (waiting for Process 1 to write)
+        fd1 = open(FIFO1, O_RDONLY);
+        if (fd1 == -1) {
+            perror("Error opening FIFO1");
+            return 1;
+        }
+
+        // Read input from FIFO1
+        int bytesRead = read(fd1, input, BUFFER_SIZE);
+        close(fd1);
+        if (bytesRead == -1) {
+            perror("Error reading from FIFO1");
+            return 1;
+        }
+
+        input[bytesRead] = '\0'; // Null-terminate the string
+
+        if (strncmp(input, "exit", 4) == 0) {
+            printf("Exiting...\n");
+            break;
+        }
+
+        // Calculate characters, words, and lines
+        int char_count, word_count, line_count;
+        count_characters_words_lines(input, &char_count, &word_count, &line_count);
+
+        // Write results to a text file
+        FILE *file = fopen("output.txt", "w");
+        if (file == NULL) {
+            perror("Failed to open file");
+            exit(EXIT_FAILURE);
+        }
+        fprintf(file, "Characters: %d\nWords: %d\nLines: %d\n", char_count, word_count, line_count);
+        fclose(file);
+
+        // Read the file contents into result buffer
+        file = fopen("output.txt", "r");
+        if (file == NULL) {
+            perror("Failed to open file");
+            exit(EXIT_FAILURE);
+        }
+        fread(result, sizeof(char), BUFFER_SIZE, file);
+        fclose(file);
+
+        // Open FIFO2 for writing (send result back to Process 1)
+        fd2 = open(FIFO2, O_WRONLY);
+        if (fd2 == -1) {
+            perror("Error opening FIFO2");
+            return 1;
+        }
+
+        // Send result to FIFO2
+        write(fd2, result, strlen(result) + 1);
+        close(fd2);
+    }
+
+    // Clean up by removing the FIFOs
+    unlink(FIFO1);
+    unlink(FIFO2);
+
+    return 0;
+}
+
